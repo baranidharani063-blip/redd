@@ -1,0 +1,172 @@
+இவ்வளவு மட்டும் இருக்கும். Tailwind-la little styling.
+
+1. Create Project
+npm create vite@latest redux-counter
+
+Select:
+
+React
+JavaScript
+
+Then:
+
+cd redux-counter
+npm install
+npm install @reduxjs/toolkit react-redux
+npm install tailwindcss @tailwindcss/vite
+2. Folder Structure
+src/
+│
+├── redux/
+│   ├── store.js
+│   └── counterSlice.js
+│
+├── App.jsx
+├── main.jsx
+└── index.css
+3. counterSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+  count: 0,
+};
+
+const counterSlice = createSlice({
+  name: "counter",
+
+  initialState,
+
+  reducers: {
+    increment: (state) => {
+      state.count += 1;
+    },
+
+    decrement: (state) => {
+      state.count -= 1;
+    },
+
+    reset: (state) => {
+      state.count = 0;
+    },
+  },
+});
+
+export const {
+  increment,
+  decrement,
+  reset,
+} = counterSlice.actions;
+
+export default counterSlice.reducer;
+🧠 இங்க என்ன இருக்கு?
+initialState
+    ↓
+count: 0
+
+reducers
+    ↓
+increment
+decrement
+reset
+
+இதுதான் Slice + Reducer + Actions.
+
+4. store.js
+import { configureStore } from "@reduxjs/toolkit";
+
+import counterReducer from "./counterSlice";
+
+const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+});
+
+export default store;
+
+👉 இங்க நம்ம counterReducer-ஐ Redux Store-க்கு connect பண்றோம்.
+
+5. main.jsx
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+
+import App from "./App";
+import store from "./redux/store";
+
+import "./index.css";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>
+);
+
+👉 Provider மூலம் Redux Store-ஐ React application-க்கு connect பண்றோம்.
+
+6. index.css
+@import "tailwindcss";
+7. App.jsx
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  increment,
+  decrement,
+  reset,
+} from "./redux/counterSlice";
+
+function App() {
+
+  const count = useSelector(
+    (state) => state.counter.count
+  );
+
+  const dispatch = useDispatch();
+
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+
+      <div className="bg-white p-8 rounded-xl shadow-md text-center">
+
+        <h1 className="text-2xl font-bold mb-5">
+          Redux Counter
+        </h1>
+
+        <p className="text-4xl font-bold mb-6">
+          {count}
+        </p>
+
+        <div className="flex gap-3">
+
+          <button
+            onClick={() => dispatch(decrement())}
+            className="bg-red-500 text-white px-4 py-2 rounded"
+          >
+            -
+          </button>
+
+          <button
+            onClick={() => dispatch(reset())}
+            className="bg-gray-500 text-white px-4 py-2 rounded"
+          >
+            Reset
+          </button>
+
+          <button
+            onClick={() => dispatch(increment())}
+            className="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+export default App;
