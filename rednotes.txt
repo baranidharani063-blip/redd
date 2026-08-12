@@ -1,0 +1,161 @@
+🔥 Redux Important Concepts
+1. Redux
+
+Redux enna?
+Redux oru state management library. Application-la multiple components share panra data-va centralized-ah manage panna use panrom.
+
+Yen use panrom?
+Oru data-va many components use panna vendi irundha, props-la repeated-ah pass pannama easy-ah manage panna Redux use panrom.
+
+2. State
+
+State enna?
+State na application-oda current data/value.
+
+Yen use panrom?
+Application-la change aagura data-va store panni manage panna state use panrom.
+
+Example:
+Cart items, username, product quantity.
+
+3. Store
+
+Store enna?
+Store na Redux-oda central place, inga application-oda Redux state store aagum.
+
+Yen use panrom?
+Different components same data-va access panna oru common place venum. Adhuku store use panrom.
+
+4. Slice
+
+Slice enna?
+Slice na application-oda oru particular feature-oda state and related logic.
+
+Yen use panrom?
+Application data-va feature-wise organize panna slice use panrom.
+
+Example:
+
+cartSlice
+userSlice
+productSlice
+
+Cart-ku related data → cartSlice
+User-ku related data → userSlice
+
+5. Reducer
+
+Reducer enna?
+Reducer na state epdi change aaganum-nu define panra function.
+
+Yen use panrom?
+User oru action perform pannumbodhu state-la enna change pannanum-nu define panna reducer use panrom.
+
+Example:
+
+addToCart
+removeItem
+increaseQty
+decreaseQty
+6. Action
+
+Action enna?
+Action na enna operation panna vendum-nu Redux-ku sollura instruction/message.
+
+Yen use panrom?
+Redux-la endha operation trigger pannanum-nu identify panna action use panrom.
+
+Example:
+
+addToCart
+removeItem
+clearCart
+7. Payload
+
+Payload enna?
+Payload na action-kooda send panra actual data.
+
+Yen use panrom?
+Reducer-ku state update panna required-aana data-va anuppa payload use panrom.
+
+Example:
+
+dispatch(removeItem(5));
+
+Inga 5 dhaan payload.
+
+Meaning:
+
+"ID 5 irukkura product-ah remove pannu."
+
+8. Dispatch
+
+Dispatch enna?
+Dispatch na action-ah Redux-ku send/trigger panra method.
+
+Yen use panrom?
+Component-la irundhu Redux state change panna action-ah trigger panna dispatch use panrom.
+
+Example:
+
+dispatch(addToCart(product));
+
+Meaning:
+
+"Redux, indha product-ah cart-la add pannu."
+
+9. useSelector
+
+useSelector enna?
+useSelector na Redux Store-la irukkura data-va read/get panna use panra hook.
+
+Yen use panrom?
+Component-ku Redux-la irukkura data venumna, adha access panna useSelector use panrom.
+
+Example:
+
+const cart = useSelector(state => state.cart.cart);
+10. useDispatch
+
+useDispatch enna?
+useDispatch na dispatch function-ah component-kulla use panna help panra hook.
+
+Yen use panrom?
+Component-lendhu Redux action-ah trigger panna useDispatch use panrom.
+
+Example:
+
+const dispatch = useDispatch();
+
+dispatch(addToCart(product));
+11. createSlice
+
+createSlice enna?
+createSlice na Redux Toolkit-la oru slice create panna use panra function.
+
+Yen use panrom?
+State, reducers, actions-ah separate-separate-ah write pannama ore place-la organize panna use panrom.
+
+12. configureStore
+s
+configureStore enna?
+configureStore na Redux Store create and configure panna use panra function.
+
+Yen use panrom?
+Namma reducers-ah connect panni, application-ku Redux Store setup panna use panrom.
+
+13. Provider
+
+Provider enna?
+Provider na Redux Store-ah React application full-ah available panna use panra component.
+
+Yen use panrom?
+Header, Home, Cart, Checkout maari different components Redux Store-ah access panna Provider use panrom.
+
+14. Redux Toolkit
+
+Redux Toolkit enna?
+Redux Toolkit na Redux code-ah easy-ah and less code-la write panna official toolkit.
+
+Yen use panrom?
+Normal Redux-la adhigama boilerplate code irukkum. Redux Toolkit use pannina code simple and clean-ah irukkum.
