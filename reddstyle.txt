@@ -1,0 +1,128 @@
+ஆம் 👍 உங்க current code already work ஆகுது. Center-la irukku. But இன்னும் கொஞ்சம் clean + attractive Tailwind style வேணும்னா App.jsx மட்டும் change பண்ணினாலே போதும். Redux code எதையும் மாற்ற வேண்டாம்.
+
+✨ App.jsx — Little Stylish Version
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  increment,
+  decrement,
+  reset,
+} from "./redux/counterSlice";
+
+function App() {
+  const count = useSelector(
+    (state) => state.counter.count
+  );
+
+  const dispatch = useDispatch();
+
+  return (
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center">
+
+      <div className="bg-white w-80 p-8 rounded-2xl shadow-lg text-center">
+
+        <h1 className="text-3xl font-bold text-slate-800 mb-2">
+          Redux Counter
+        </h1>
+
+        <p className="text-slate-500 mb-6">
+          Simple Redux Example
+        </p>
+
+        <div className="bg-slate-100 rounded-xl py-5 mb-6">
+          <p className="text-5xl font-bold text-blue-600">
+            {count}
+          </p>
+        </div>
+
+        <div className="flex items-center justify-center gap-3">
+
+          <button
+            onClick={() => dispatch(decrement())}
+            className="w-12 h-12 bg-red-500 text-white text-xl font-bold rounded-lg hover:bg-red-600 transition"
+          >
+            -
+          </button>
+
+          <button
+            onClick={() => dispatch(reset())}
+            className="px-5 h-12 bg-slate-700 text-white font-semibold rounded-lg hover:bg-slate-800 transition"
+          >
+            Reset
+          </button>
+
+          <button
+            onClick={() => dispatch(increment())}
+            className="w-12 h-12 bg-green-500 text-white text-xl font-bold rounded-lg hover:bg-green-600 transition"
+          >
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+export default App;
+🎨 Output roughly இப்படித்தான் இருக்கும்:
+        ┌──────────────────────────┐
+        │                          │
+        │      Redux Counter       │
+        │   Simple Redux Example   │
+        │                          │
+        │       ┌──────────┐       │
+        │       │    0     │       │
+        │       └──────────┘       │
+        │                          │
+        │     [ - ] [ Reset ] [ + ]│
+        │                          │
+        └──────────────────────────┘
+முக்கியமான Tailwind classes என்ன செய்கிறது?
+min-h-screen
+↓
+Full screen height
+
+flex
+↓
+Flexbox enable
+
+items-center
+↓
+Vertical center
+
+justify-center
+↓
+Horizontal center
+
+bg-slate-100
+↓
+Light background
+
+w-80
+↓
+Card width
+
+p-8
+↓
+Card உள்ளே spacing
+
+rounded-2xl
+↓
+Rounded corners
+
+shadow-lg
+↓
+Card shadow
+
+hover:bg-green-600
+↓
+Mouse போகும்போது button color change
+
+transition
+↓
+Smooth animation
+
+Redux part touch பண்ணவே வேண்டாம். counterSlice.js, store.js, main.jsx எல்லாம் அப்படியே வைத்துக்கோங்க. App.jsx மட்டும் இந்த code-ஆ replace பண்ணினா போதும்.
