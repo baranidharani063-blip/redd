@@ -1,0 +1,141 @@
+Sure 👍 React + Tailwind use panni simple Login Page step-by-step build pannalam. First basic version-la email, password, Login button mattum vechukalam.
+
+1. Project create pannunga
+
+VS Code terminal-la:
+
+npm create vite@latest login-page
+
+Select:
+
+React
+JavaScript
+
+Then:
+
+cd login-page
+npm install
+npm install tailwindcss @tailwindcss/vite
+2. vite.config.js change pannunga
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+})
+3. src/index.css
+
+Existing content remove pannitu:
+
+@import "tailwindcss";
+4. src/App.jsx
+
+Complete Login UI:
+
+function App() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+
+
+      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+
+
+        <h1 className="text-3xl font-bold text-center text-gray-800 mb-2">
+          Login
+        </h1>
+
+
+        <p className="text-center text-gray-500 mb-8">
+          Welcome back! Please login to your account.
+        </p>
+
+
+        <form>
+
+
+          {/* Email */}
+          <div className="mb-5">
+            <label className="block text-gray-700 font-medium mb-2">
+              Email
+            </label>
+
+
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+
+          {/* Password */}
+          <div className="mb-5">
+            <label className="block text-gray-700 font-medium mb-2">
+              Password
+            </label>
+
+
+            <input
+              type="password"
+              placeholder="Enter your password"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+
+          {/* Remember + Forgot */}
+          <div className="flex justify-between items-center mb-6">
+
+
+            <label className="flex items-center gap-2 text-gray-600">
+              <input type="checkbox" />
+              Remember me
+            </label>
+
+
+            <a href="#" className="text-blue-500 hover:underline">
+              Forgot Password?
+            </a>
+
+
+          </div>
+
+
+          {/* Login Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+          >
+            Login
+          </button>
+
+
+        </form>
+
+
+        <p className="text-center text-gray-600 mt-6">
+          Don't have an account?
+          <a href="#" className="text-blue-600 font-medium ml-1 hover:underline">
+            Sign Up
+          </a>
+        </p>
+
+
+      </div>
+
+
+    </div>
+  )
+}
+
+
+export default App
+5. Run pannunga
+npm run dev
+
+Browser-la Vite kudukkura localhost URL open pannunga.
