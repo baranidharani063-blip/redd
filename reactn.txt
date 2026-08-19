@@ -1,0 +1,172 @@
+Sure 👍 இப்போ React Native + Expo use பண்ணி ஒரு simple Mobile To-Do App create பண்ணலாம். அதே app-ஐ உங்க mobile-ல Expo Go மூலம் live-ஆ பார்க்கலாம்.
+
+Step 1 — Expo install / project create
+
+VS Code terminal open பண்ணி:
+
+npx create-expo-app@latest todo-app
+
+SDK/template கேட்கும்போது default/latest option select பண்ணுங்க.
+
+Project create ஆனதும்:
+
+cd todo-app
+npm start
+
+அல்லது:
+
+npx expo start
+Step 2 — Expo Go mobile-la install பண்ணுங்க
+
+உங்க Android mobile-ல Expo Go install பண்ணுங்க.
+
+Then:
+
+Mobile + Laptop same Wi-Fi connect பண்ணுங்க.
+Terminal-la npx expo start run பண்ணுங்க.
+Terminal-la QR code வரும்.
+Mobile-la Expo Go open பண்ணுங்க.
+Scan QR code பண்ணுங்க.
+App mobile-la open ஆகும். 📱
+
+QR scan ஆகலனா சொல்லுங்க; LAN / Tunnel method-ல fix பண்ணலாம்.
+
+Step 3 — Basic project structure
+
+Project open பண்ணும்போது newer Expo template-la app folder இருக்கலாம்.
+
+Simple-ஆ learn பண்ணுவதற்காக முதலில் app/index.tsx அல்லது app/index.jsx file-ஐ use பண்ணலாம்.
+
+உங்க project-la app/index.tsx இருந்தா அதையே edit பண்ணுங்க.
+
+Step 4 — First React Native code
+
+app/index.tsx உள்ள code-ஐ remove பண்ணிட்டு:
+
+import { View, Text, StyleSheet } from "react-native";
+
+
+export default function HomeScreen() {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>My To-Do App</Text>
+      <Text style={styles.subtitle}>Hello React Native 👋</Text>
+    </View>
+  );
+}
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+
+
+  subtitle: {
+    fontSize: 18,
+    marginTop: 10,
+  },
+});
+
+Save பண்ணுங்க.
+
+Mobile-la automatically:
+
+My To-Do App
+Hello React Native 👋
+
+என்று வரும்.
+
+Step 5 — இப்போ actual To-Do App
+
+இப்போ app/index.tsx-ல இந்த code use பண்ணலாம்:
+
+import { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+} from "react-native";
+
+
+export default function HomeScreen() {
+  const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState<string[]>([]);
+
+
+  const addTask = () => {
+    if (task.trim() === "") return;
+
+
+    setTasks([...tasks, task]);
+    setTask("");
+  };
+
+
+  return (
+    <View style={styles.container}>
+
+
+      <Text style={styles.title}>📝 My To-Do App</Text>
+
+
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your task"
+        value={task}
+        onChangeText={setTask}
+      />
+
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={addTask}
+📱 Mobile-la output
+📝 My To-Do App
+
+
+[ Enter your task       ]
+
+
+      [ Add Task ]
+
+
+• Learn React Native
+
+
+• Practice Expo
+
+
+• Build Mobile App
+Step 6 — முக்கியமான React Native concepts
+
+இந்த small project-லேயே நம்ம Day 24–26 concepts சில cover பண்ணிட்டோம்:
+
+Concept	Code
+Component	HomeScreen()
+State	useState()
+Text	<Text>
+Input	<TextInput>
+Button	<TouchableOpacity>
+List	<FlatList>
+Styling	StyleSheet
+Event	onPress
+Input event	onChangeText
+அடுத்ததாக
+
+இந்த To-Do App-ஐ தான் step-by-step upgrade பண்ணலாம்:
+
+1. Delete Task → 2. Complete Task → 3. Navigation → 4. API → 5. AsyncStorage → 6. Login/Auth
+
+இது உங்க Day 24–28 React Native syllabus-க்கு நல்ல practice project ஆக இருக்கும்.
