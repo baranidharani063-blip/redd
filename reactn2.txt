@@ -1,0 +1,300 @@
+Sure 👍 Navigation மட்டும் தனியா ஒரு complete React Native + Expo Router project மாதிரி கொடுக்கிறேன். உங்க current structure-க்கு exact-a match ஆகும்.
+
+நம்ம example:
+
+Home → Details → Profile → Back
+
+1. Folder Structure
+
+உங்க src/app உள்ளே இதை மட்டும் வைத்துக்கோங்க:
+
+src/
+└── app/
+    ├── _layout.tsx
+    ├── index.tsx
+    ├── details.tsx
+    └── profile.tsx
+
+explore.tsx தேவையில்லை. Delete பண்ணலாம்.
+
+2. _layout.tsx
+
+இது Navigation setup.
+
+import { Stack } from "expo-router";
+
+
+export default function RootLayout() {
+  return (
+    <Stack>
+      <Stack.Screen
+        name="index"
+        options={{
+          title: "Home",
+        }}
+      />
+
+
+      <Stack.Screen
+        name="details"
+        options={{
+          title: "Details",
+        }}
+      />
+
+
+      <Stack.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+        }}
+      />
+    </Stack>
+  );
+}
+இதன் meaning:
+Stack
+ │
+ ├── Home
+ ├── Details
+ └── Profile
+
+இது Stack Navigation.
+
+3. index.tsx
+
+இது நம்ம Home Screen.
+
+import { View, Text, Button, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+
+
+export default function HomeScreen() {
+  const router = useRouter();
+
+
+  return (
+    <View style={styles.container}>
+
+
+      <Text style={styles.title}>
+        🏠 Home Screen
+      </Text>
+
+
+      <Button
+        title="Go to Details"
+        onPress={() => router.push("/details")}
+      />
+
+
+      <View style={styles.space} />
+
+
+      <Button
+        title="Go to Profile"
+        onPress={() => router.push("/profile")}
+      />
+
+
+    </View>
+  );
+}
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+
+
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 30,
+  },
+
+
+  space: {
+    height: 15,
+  },
+});
+4. details.tsx
+
+இது Details Screen.
+
+import { View, Text, Button, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+
+
+export default function DetailsScreen() {
+  const router = useRouter();
+
+
+  return (
+    <View style={styles.container}>
+
+
+      <Text style={styles.title}>
+        📄 Details Screen
+      </Text>
+
+
+      <Button
+        title="Go Back"
+        onPress={() => router.back()}
+      />
+
+
+    </View>
+  );
+}
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    marginBottom: 25,
+  },
+});
+5. profile.tsx
+
+இது Profile Screen.
+
+import { View, Text, Button, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+
+
+export default function ProfileScreen() {
+  const router = useRouter();
+
+
+  return (
+    <View style={styles.container}>
+
+
+      <Text style={styles.title}>
+        👤 Profile Screen
+      </Text>
+
+
+      <Button
+        title="Go Back"
+        onPress={() => router.back()}
+      />
+
+
+    </View>
+  );
+}
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    marginBottom: 25,
+  },
+});
+6. Run the project
+
+Terminal:
+
+npx expo start
+
+QR code வரும்.
+
+Mobile → Expo Go → Scan QR Code
+
+📱 Output
+
+First screen:
+
+┌─────────────────────────┐
+│          Home           │
+│                         │
+│      🏠 Home Screen     │
+│                         │
+│   [ Go to Details ]     │
+│                         │
+│   [ Go to Profile ]     │
+└─────────────────────────┘
+Go to Details click பண்ணினா:
+┌─────────────────────────┐
+│         Details         │
+│                         │
+│    📄 Details Screen    │
+│                         │
+│       [ Go Back ]       │
+└─────────────────────────┘
+Go to Profile click பண்ணினா:
+┌─────────────────────────┐
+│         Profile         │
+│                         │
+│    👤 Profile Screen    │
+│                         │
+│       [ Go Back ]       │
+└─────────────────────────┘
+🧠 முக்கியமான 4 lines
+1. Navigation import
+import { useRouter } from "expo-router";
+2. Router create
+const router = useRouter();
+3. Next screen
+router.push("/details");
+4. Previous screen
+router.back();
+
+அதாவது:
+
+router.push()
+     ↓
+Next Screen
+
+
+router.back()
+     ↓
+Previous Screen
+⭐ முக்கியமாக
+
+Expo Router-ல file name தான் route name.
+
+index.tsx
+   ↓
+/
+
+
+details.tsx
+   ↓
+/details
+
+
+profile.tsx
+   ↓
+/profile
+
+அதனால:
+
+router.push("/details")
+
+என்றால் details.tsx screen-க்கு போகும்.
+
+இதுதான் உங்க React Native Navigation-க்கு complete basic example. முதலில் இதை mobile-ல run பண்ணி Home → Details → Back வேலை செய்கிறதா பாருங்க.
