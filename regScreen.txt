@@ -1,0 +1,272 @@
+Yes 👍 Assessment-la Topic 1 – Register Screen first build pannalam.
+
+Image-la irukura requirement:
+
+Register Screen
+Backend: Register API
+
+So first step-la React + Tailwind use panni simple Register UI create pannuvom. API integration-a next step-la connect pannalam.
+
+🎯 Register Screen – Basic Fields
+
+Simple-ah professional screen-ku:
+
+Full Name
+Email
+Password
+Confirm Password
+Register button
+Already have an account? Login
+1. Create React Project
+
+VS Code terminal-la:
+
+npm create vite@latest register-app
+
+Select:
+
+React
+JavaScript
+
+Then:
+
+cd register-app
+npm install
+
+Tailwind install:
+
+npm install tailwindcss @tailwindcss/vite
+2. vite.config.js
+
+Existing vite.config.js-a:
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+});
+3. src/index.css
+
+Existing content-a remove panni:
+
+@import "tailwindcss";
+4. src/App.jsx
+
+Full code:
+
+import { useState } from "react";
+            />
+          </div>
+
+
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
+
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Confirm Password
+            </label>
+
+
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="Confirm your password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+
+          {/* Register Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-semibold hover:bg-blue-700"
+          >
+            Register
+          </button>
+
+
+        </form>
+
+
+        {/* Login */}
+        <p className="text-center text-sm text-gray-600 mt-6">
+          Already have an account?{" "}
+          <span className="text-blue-600 font-semibold cursor-pointer">
+            Login
+          </span>
+        </p>
+
+
+      </div>
+    </div>
+  );
+}
+
+
+export default App;
+5. Run the project
+npm run dev
+
+Browser-la Vite kudukkura localhost URL open pannunga.
+
+You will get:
+
+        Create Account
+
+
+      Register to get started
+
+
+Full Name
+[ Enter your name          ]
+
+
+Email
+[ Enter your email         ]
+
+
+Password
+[ Enter your password      ]
+
+
+Confirm Password
+[ Confirm your password    ]
+
+
+[       Register           ]
+
+
+Already have an account? Login
+🔥 Code-la important concepts
+useState
+const [formData, setFormData] = useState({
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+});
+
+Form values store panna use panrom.
+
+handleChange
+const handleChange = (e) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+};
+
+User input type pannumbodhu state update aagum.
+
+For example:
+
+Name → Barani
+Email → barani@gmail.com
+Password → 123456
+
+formData:
+
+{
+  name: "Barani",
+  email: "barani@gmail.com",
+  password: "123456",
+  confirmPassword: "123456"
+}
+handleSubmit
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+Page refresh aagama form submit handle pannum.
+
+Then:
+
+if (formData.password !== formData.confirmPassword) {
+  alert("Passwords do not match");
+  return;
+}
+
+Password mismatch check pannum.
+
+⚠️ Important for your assessment
+
+Ippo namma frontend Register Screen mattum complete pannirukkom.
+
+Assessment-la backend requirement:
+
+Register API
+
+So next stage:
+
+Register Screen
+      ↓
+User enters details
+      ↓
+Register button
+      ↓
+POST Request
+      ↓
+Register API
+      ↓
+Backend
+      ↓
+Registration success
+
+For example, later our handleSubmit-la:
+
+const response = await fetch("REGISTER_API_URL", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name: formData.name,
+    email: formData.email,
+    password: formData.password,
+  }),
+});
+
+But actual API URL ungalukku backend team / assessment-la kudutha URL dhaan use pannanum.
+
+Assessment complete flow
+1. Register Screen
+       ↓
+2. Register API
+       ↓
+3. Login Screen
+       ↓
+4. Login API + JWT
+       ↓
+5. Token save
+       ↓
+6. Token exists?
+       ↓
+   Yes → Dashboard
+   No  → Login
+       ↓
+7. Logout
+
+So first Register Screen UI-a above code-la complete pannunga. After that, Register API connect pannurathu next step.
