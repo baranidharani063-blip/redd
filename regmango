@@ -1,0 +1,239 @@
+ஆம் 👍 இப்போ உங்க React Registration Form → Backend → MongoDB connect பண்ணலாம்.
+
+உங்க current React code-ஐ மாற்றாமல், அதுக்கு ஒரு Node.js + Express + MongoDB backend உருவாக்குவோம். MongoDB-க்கு data save செய்ய Mongoose பயன்படுத்தலாம்; Mongoose-ல் Model.create() / save() மூலம் documents MongoDB-ல் insert செய்யலாம்.
+
+Overall flow
+React Form
+   ↓
+handleSubmit()
+   ↓
+fetch()
+   ↓
+Express Backend
+   ↓
+Mongoose
+   ↓
+MongoDB
+   ↓
+Database-la User Data Save
+1. Project structure
+
+உங்க React project இருக்கும் folder-க்கு வெளியே backend folder create பண்ணுங்க:
+
+registration-project/
+│
+├── frontend/          ← உங்க React project
+│   └── src/
+│       └── App.jsx
+│
+└── backend/
+    ├── server.js
+    ├── models/
+    │   └── User.js
+    └── .env
+2. Backend create பண்ணுங்க
+
+VS Code terminal:
+
+mkdir backend
+cd backend
+npm init -y
+
+Packages install:
+
+npm install express mongoose cors dotenv
+
+MongoDB connection-க்கு Mongoose-ன் mongoose.connect() பயன்படுத்தலாம்.
+
+3. server.js
+
+backend/server.js create பண்ணி:
+
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("MongoDB Connected");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+app.post("/register", async (req, res) => {
+  try {
+    const user = new User({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    });
+
+    await user.save();
+
+    res.json({
+      message: "Registration successful",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Registration failed",
+    });
+  }
+});
+
+app.listen(5000, () => {
+  console.log("Server running on port 5000");
+});
+
+Important: மேலே User இன்னும் create பண்ணவில்லை. அதற்காக next step.
+
+4. User.js
+
+backend/models/User.js create பண்ணுங்க:
+
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  password: String,
+});
+
+const User = mongoose.model("User", userSchema);
+
+module.exports = User;
+
+இப்போ server.js மேலே இந்த line add பண்ணுங்க:
+
+const User = require("./models/User");
+
+So beginning of server.js:
+
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
+
+const User = require("./models/User");
+
+const app = express();
+
+Mongoose model என்பது schema-வை வைத்து MongoDB documents create/read செய்ய பயன்படுத்தப்படுகிறது.
+
+5. MongoDB setup
+
+நீங்க MongoDB Atlas use பண்ணலாம். இது cloud MongoDB database.
+
+Atlas-ல் cluster create பண்ணி connection string எடுத்துக்கோங்க.
+
+Then .env:
+
+MONGO_URL=your_mongodb_connection_string
+
+Example format:
+
+MONGO_URL=mongodb+srv://username:password@cluster.mongodb.net/registrationDB
+
+உங்க actual username/password-ஐ இங்கே தான் போடணும்.
+
+.env-ஐ GitHub-ல் upload பண்ணக்கூடாது.
+
+6. Backend run பண்ணுங்க
+
+backend folder-ல்:
+
+node server.js
+
+Success:
+
+Server running on port 5000
+MongoDB Connected
+7. இப்போ உங்க React code-ல் முக்கியமான change
+
+Current handleSubmit:
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  alert("Registration successful!");
+
+  console.log(formData);
+};
+
+இதுக்கு பதிலா:
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const response = await fetch("http://localhost:5000/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  });
+
+  const data = await response.json();
+
+  alert(data.message);
+
+  console.log(data);
+};
+
+அவ்வளவுதான். 🎉
+
+இப்போ user form-ல்:
+
+Name     → Barani
+Email    → barani@gmail.com
+Password → 123456
+
+Register click பண்ணும்போது:
+
+React
+  ↓
+POST http://localhost:5000/register
+  ↓
+Express
+  ↓
+User Model
+  ↓
+MongoDB
+
+MongoDB-ல் roughly இப்படி document வரும்:
+
+users
+
+{
+  _id: "...",
+  name: "Barani",
+  email: "barani@gmail.com",
+  password: "123456"
+}
+⚠️ One important thing
+
+Real project-ல் password-ஐ plain text-ஆ save பண்ணக்கூடாது. இது learning/demo purpose மட்டும். Actual registration system-ல் password-ஐ bcrypt போன்ற password-hashing library மூலம் hash செய்து தான் database-ல் save செய்ய வேண்டும்.
+
+இப்போ உங்க project-ல் 3 parts
+1. React
+   ↓
+   Registration UI
+
+2. Node + Express
+   ↓
+   Backend API
+
+3. MongoDB
+   ↓
+   User data storage
+
+MongoDB-யை React-ல direct-ஆ connect பண்ணாமல், React → Express/Node → MongoDB architecture use பண்ணுவது தான் சரியான approach. Express database integration-ல் MongoDB driver/ODM பயன்படுத்தலாம் என்று அதன் documentation-லும் குறிப்பிடுகிறது.
+
+நீங்க இப்போ beginner level-la backend learn பண்ணுற மாதிரி, அடுத்த step-ல நான் இதையே MongoDB Atlas account create → connection string எடுக்க → backend folder create → எல்லா files complete code → React connect → MongoDB-ல் saved data பார்க்கன்னு exact step-by-step-ஆ செய்யலாம்.
