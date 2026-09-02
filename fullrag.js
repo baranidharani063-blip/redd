@@ -1,596 +1,386 @@
-Sure 👍 உங்க current React + Tailwind Registration Form-க்கு complete backend சேர்த்து, MongoDB-ல் data save ஆகுற மாதிரி முழு project-ஐ beginner-friendly step-by-step கொடுக்கிறேன்.
+Sure Arun 👍 புரிஞ்சுது. ஒவ்வொரு task-ஐயும் தனித்தனி question + code + output ஆக கொடுக்கிறேன். Beginner level-ல easy-ஆ follow பண்ணலாம்.
 
-Important: Password-ஐ plain text-ஆ database-ல் save பண்ணாமல் bcryptjs use பண்ணி hash செய்வோம்.
+1️⃣ Basic Express Server
+📝 Question
 
-1. Final Project Structure
-registration-app/
-│
-├── frontend/
-│   ├── src/
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   ├── package.json
-│   └── ...
-│
-└── backend/
-    ├── models/
-    │   └── User.js
-    │
-    ├── .env
-    ├── server.js
-    └── package.json
-PART 1 — FRONTEND
-Step 1: React project create
+Create a Simple Express Server
 
-Terminal:
+Create an Express server that listens on port 3000 and returns "Server is running" when accessing the root route /.
 
-npm create vite@latest frontend
+Input:
 
-Select:
+GET /
 
-React
-JavaScript
+Expected Output:
 
-Then:
-
-cd frontend
-npm install
-
-Tailwind already setup இல்லையென்றால்:
-
-npm install tailwindcss @tailwindcss/vite
-Step 2: App.jsx
-
-src/App.jsx-ல் இந்த code:
-
-import { useState } from "react";
-
-function App() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:5000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      alert(data.message);
-
-      if (response.ok) {
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-        });
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Something went wrong");
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-
-      <div className="bg-white w-full max-w-md p-8 rounded-xl shadow-md">
-
-        <h1 className="text-2xl font-bold text-center">
-          Create Account
-        </h1>
-
-        <p className="text-center text-gray-500 mt-2 mb-6">
-          Register to get started
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-
-          {/* Name */}
-          <div>
-            <label>Full Name</label>
-
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full border rounded-lg px-4 py-2 mt-1"
-            />
-          </div>
-
-          {/* Email */}
-          <div>
-            <label>Email</label>
-
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full border rounded-lg px-4 py-2 mt-1"
-            />
-          </div>
-
-          {/* Password */}
-          <div>
-            <label>Password</label>
-
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="w-full border rounded-lg px-4 py-2 mt-1"
-            />
-          </div>
-
-          {/* Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg"
-          >
-            Register
-          </button>
-
-        </form>
-
-        <p className="text-center text-sm mt-6">
-          Already have an account?{" "}
-          <span className="text-blue-600">
-            Login
-          </span>
-        </p>
-
-      </div>
-
-    </div>
-  );
-}
-
-export default App;
-இங்கே முக்கியமானது:
-
-இந்த code:
-
-fetch("http://localhost:5000/register")
-
-React-லிருந்து backend-க்கு data அனுப்பும்.
-
-PART 2 — BACKEND
-Step 3: Backend folder create
-
-frontend folder-க்கு வெளியே போங்க.
-
-Structure:
-
-registration-app/
-├── frontend/
-└── backend/
-
-Terminal:
-
-mkdir backend
-cd backend
-Step 4: Node project create
-npm init -y
-
-இது:
-
-package.json
-
-create பண்ணும்.
-
-Step 5: Packages install
-npm install express mongoose cors dotenv bcryptjs
-
-இதுல:
-
-Package	Purpose
-express	Backend server
-mongoose	MongoDB connection
-cors	Frontend → Backend communication
-dotenv	.env values
-bcryptjs	Password hashing
-Step 6: Backend folders
-
-backend உள்ளே:
-
-backend/
-│
-├── models/
-│   └── User.js
-│
-├── .env
-│
-└── server.js
-Step 7: User.js
-
-backend/models/User.js
-
-const mongoose = require("mongoose");
-
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
-
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-
-    password: {
-      type: String,
-      required: true,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
-
-const User = mongoose.model("User", userSchema);
-
-module.exports = User;
-இது என்ன செய்கிறது?
-
-MongoDB-ல் User எப்படி இருக்கணும் என்று define செய்கிறது.
-
-User
-│
-├── name
-├── email
-├── password
-└── createdAt
-Step 8: MongoDB Atlas
-
-இப்போ MongoDB database வேண்டும்.
-
-MongoDB Atlas account create பண்ணி ஒரு cluster create பண்ணுங்க.
-
-Atlas-ல்:
-
-Database
-   ↓
-Connect
-   ↓
-Drivers
-   ↓
-Node.js
-
-அங்கே ஒரு connection string கிடைக்கும்.
-
-Example:
-
-mongodb+srv://username:password@cluster.mongodb.net/registrationDB
-
-உங்க actual username/password use பண்ணணும்.
-
-Step 9: .env
-
-backend/.env
-
-MONGO_URL=mongodb+srv://username:password@cluster.mongodb.net/registrationDB
-
-Example மட்டும்:
-
-MONGO_URL=mongodb+srv://barani:123456@cluster.mongodb.net/registrationDB
-
-⚠️ Real password-ஐ யாரிடமும் share பண்ணாதீங்க.
-
-Step 10: server.js
-
-backend/server.js
-
+Server is running
+💻 Code — server.js
 const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const bcrypt = require("bcryptjs");
-require("dotenv").config();
-
-const User = require("./models/User");
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+const PORT = 3000;
 
-// MongoDB connection
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("MongoDB Connected");
-  })
-  .catch((error) => {
-    console.log("MongoDB Error:", error);
-  });
-
-// Register API
-app.post("/register", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-
-    // Check existing email
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
-      return res.status(400).json({
-        message: "Email already registered",
-      });
-    }
-
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create user
-    const user = new User({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
-    // Save to MongoDB
-    await user.save();
-
-    res.status(201).json({
-      message: "Registration successful!",
-    });
-
-  } catch (error) {
-    console.log(error);
-
-    res.status(500).json({
-      message: "Server error",
-    });
-  }
+app.get("/", (req, res) => {
+    res.send("Server is running");
 });
 
-// Server
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
-PART 3 — எப்படி இது WORK ஆகும்?
+▶️ Run
+node server.js
 
-இது தான் மிக முக்கியம். 👇
+Terminal:
 
-User form-ல்:
+Server running on port 3000
 
-Name:
-Barani
+Browser/Postman:
 
-Email:
-barani@gmail.com
+http://localhost:3000/
 
-Password:
-123456
+Output:
 
-Register click பண்ணுறீங்க.
+Server is running
+🔍 Important
+app.get("/", ...)
 
-Step 1 — React
+/ → root route.
 
-handleSubmit() execute ஆகும்.
+res.send("Server is running");
 
-const handleSubmit = async (e) => {
-Step 2 — React data collect செய்யும்
-formData
+Client-க்கு response அனுப்புகிறது.
 
-இதுல:
+2️⃣ Route Parameters
+📝 Question
+
+Handle Route Params
+
+Create an API endpoint /user/:id that returns the user ID from the URL.
+
+Input:
+
+GET /user/101
+
+Expected Output:
 
 {
-  name: "Barani",
-  email: "barani@gmail.com",
-  password: "123456"
+    "id": "101"
 }
-Step 3 — React backend-க்கு அனுப்பும்
-fetch("http://localhost:5000/register", {
+💻 Code — server.js
+const express = require("express");
 
-இதன் meaning:
+const app = express();
 
-React
-  ↓
-localhost:5000
+const PORT = 3000;
 
-Backend server-ஐ contact செய்கிறது.
+app.get("/user/:id", (req, res) => {
 
-Step 4 — POST request
-method: "POST"
+    const userId = req.params.id;
 
-Meaning:
+    res.json({
+        id: userId
+    });
 
-"Backend, நான் உனக்கு data அனுப்புறேன்."
+});
 
-Step 5 — Data JSON-ஆ போகும்
-body: JSON.stringify(formData)
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+▶️ Run
+node server.js
 
-Backend-க்கு:
+Browser/Postman:
+
+GET http://localhost:3000/user/101
+
+Output:
 
 {
-  "name": "Barani",
-  "email": "barani@gmail.com",
-  "password": "123456"
+    "id": "101"
 }
-Step 6 — Express receive செய்யும்
+🔍 Important
 
-Backend:
+இந்த URL:
 
-app.post("/register", async (req, res) => {
+/user/101
 
-இது /register request-ஐ receive செய்யும்.
+இதில்:
 
-Step 7 — Data எடுத்துக்கொள்ளும்
-const { name, email, password } = req.body;
+:id
 
-இப்போ:
+ஒரு route parameter.
 
-name     → Barani
-email    → barani@gmail.com
-password → 123456
-Step 8 — Email already இருக்கா check
-const existingUser = await User.findOne({ email });
+அதை பெற:
 
-MongoDB-ல்:
+req.params.id
 
-barani@gmail.com
+Example:
 
-already இருக்கிறதா என்று check செய்யும்.
+/user/500
 
-Step 9 — Password hash
+Output:
 
-Original:
+{
+    "id": "500"
+}
+3️⃣ Query Parameters
+📝 Question
 
-123456
+Search Using Query Params
 
-Database-ல் direct-ஆ save செய்யமாட்டோம்.
+Create an endpoint /search that accepts a query parameter name and returns it.
 
-const hashedPassword = await bcrypt.hash(password, 10);
+Input:
 
-Database-ல் something like:
+GET /search?name=John
 
-$2b$10$..............
+Expected Output:
 
-மாதிரி hashed value இருக்கும்.
+{
+    "name": "John"
+}
+💻 Code — server.js
+const express = require("express");
 
-Step 10 — User create
-const user = new User({
-  name,
-  email,
-  password: hashedPassword,
-});
-Step 11 — MongoDB-ல் save
-await user.save();
+const app = express();
 
-இதுதான் actual database save.
+const PORT = 3000;
 
-MongoDB:
+app.get("/search", (req, res) => {
 
-registrationDB
-      ↓
-users
-      ↓
---------------------------------
-name: Barani
-email: barani@gmail.com
-password: $2b$10$........
-createdAt: ...
---------------------------------
-Step 12 — Backend response
+    const name = req.query.name;
 
-Backend:
+    res.json({
+        name: name
+    });
 
-res.status(201).json({
-  message: "Registration successful!",
 });
 
-React அந்த response-ஐ receive செய்யும்:
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+▶️ Run
+node server.js
 
-const data = await response.json();
+Browser/Postman:
+
+GET http://localhost:3000/search?name=John
+
+Output:
+
+{
+    "name": "John"
+}
+🔍 Important
+
+URL:
+
+/search?name=John
+
+name=John → query parameter
+
+Get it using:
+
+req.query.name
+
+Another example:
+
+/search?name=Arun
+
+Output:
+
+{
+    "name": "Arun"
+}
+4️⃣ Middleware Logging
+📝 Question
+
+Create a Logger Middleware
+
+Create a middleware that logs the request method and URL for every incoming request.
+
+💻 Code — server.js
+const express = require("express");
+
+const app = express();
+
+const PORT = 3000;
+
+// Logger Middleware
+app.use((req, res, next) => {
+
+    console.log(req.method, req.url);
+
+    next();
+
+});
+
+// Test route
+app.get("/", (req, res) => {
+    res.send("Server is running");
+});
+
+app.get("/user/:id", (req, res) => {
+    res.json({
+        id: req.params.id
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+▶️ Run
+node server.js
+
+Now open:
+
+http://localhost:3000/
+
+Terminal output:
+
+GET /
 
 Then:
 
-alert(data.message);
+http://localhost:3000/user/101
 
-Browser-ல்:
+Terminal:
 
-Registration successful!
+GET /user/101
+🔍 Important
+app.use((req, res, next) => {
 
-வரும். 🎉
+இதுதான் middleware.
 
-PART 4 — எப்படி Run பண்ணுவது?
+req.method
 
-2 terminals open பண்ணுங்க.
+Request method:
 
-Terminal 1 — Backend
-cd backend
+GET
+POST
+PUT
+DELETE
+req.url
+
+Request URL:
+
+/
+ /user/101
+ /search?name=John
+next();
+
+அடுத்த middleware அல்லது route-க்கு request-ஐ அனுப்பும்.
+
+5️⃣ POST Request with JSON Body
+📝 Question
+
+Handle POST Request
+
+Create a POST endpoint /login that accepts JSON body:
+
+{
+    "username": "admin",
+    "password": "1234"
+}
+
+and returns:
+
+{
+    "message": "Login successful",
+    "user": "admin"
+}
+💻 Code — server.js
+const express = require("express");
+
+const app = express();
+
+const PORT = 3000;
+
+// JSON Middleware
+app.use(express.json());
+
+// POST Login
+app.post("/login", (req, res) => {
+
+    const username = req.body.username;
+    const password = req.body.password;
+
+    res.json({
+        message: "Login successful",
+        user: username
+    });
+
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+▶️ Run
 node server.js
+📮 Postman
 
-Output:
+Method:
 
-Server running on port 5000
-MongoDB Connected
-Terminal 2 — Frontend
-cd frontend
-npm run dev
+POST
 
-Output:
+URL:
 
-Local: http://localhost:5173/
+http://localhost:3000/login
 
-Browser:
+Go to:
 
-http://localhost:5173
+Body → raw → JSON
 
-Open பண்ணுங்க.
+Enter:
 
-Final Architecture
-                USER
-                 │
-                 ▼
-        ┌─────────────────┐
-        │  React + Tailwind│
-        │  Registration UI │
-        └────────┬────────┘
-                 │
-                 │ fetch()
-                 ▼
-        ┌─────────────────┐
-        │ Node.js + Express│
-        │    POST /register│
-        └────────┬────────┘
-                 │
-                 │ Mongoose
-                 ▼
-        ┌─────────────────┐
-        │     MongoDB      │
-        │   registrationDB │
-        │                   │
-        │ Users Collection  │
-        └─────────────────┘
-உங்க project-ல இப்போ என்ன கற்றுக்கிட்டீங்க?
-React
-  ↓
-useState
-  ↓
-Form
-  ↓
-fetch()
-  ↓
-API
-  ↓
-Express
-  ↓
-Mongoose
-  ↓
-MongoDB
+{
+    "username": "admin",
+    "password": "1234"
+}
+✅ Output
+{
+    "message": "Login successful",
+    "user": "admin"
+}
+🔍 Important
 
-இதுதான் ஒரு basic full-stack registration project.
+இந்த line:
 
-அடுத்த logical step Login. அதில் React login form → /login API → MongoDB email/password check → bcrypt.compare() → successful login என்று build பண்ணலாம்.
+app.use(express.json());
+
+JSON request body-ஐ Express read பண்ணுவதற்கு.
+
+இந்த line:
+
+req.body.username
+
+JSON-ல இருந்து username எடுக்கிறது.
+
+இந்த line:
+
+req.body.password
+
+password எடுக்கிறது.
+
+🧠 இந்த 5 tasks-ல் நீ கற்றுக்கொள்ள வேண்டியது
+Task	Main Concept	Code
+1	Basic Server	app.get()
+2	Route Parameter	req.params
+3	Query Parameter	req.query
+4	Middleware	app.use() + next()
+5	JSON POST	req.body
+
+Easy-ஆ நினைவில் வைக்க:
+
+URL /user/101
+       ↓
+req.params.id
+URL /search?name=John
+                ↓
+          req.query.name
+POST JSON
+   ↓
+req.body.username
+
+இந்த 5 concepts புரிஞ்சா Express.js basics-ல ஒரு நல்ல foundation வந்துடும்.
